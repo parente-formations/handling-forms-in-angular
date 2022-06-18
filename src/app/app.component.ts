@@ -1,12 +1,18 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, Injector, OnInit, ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
+import {
+  calculatorList,
+  MyCalculatorBase,
+  MyFirstCalculator,
+  MySecondCalculator,
+} from "./Services/FactoryServices";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   @ViewChild("f", { static: false }) signupForm: NgForm;
 
   defaultQuestion = "teacher";
@@ -20,6 +26,18 @@ export class AppComponent {
     gender: "",
   };
   submitted = false;
+
+  constructor(private injector: Injector) {}
+
+  ngOnInit(): void {
+    const myFirstCalculator: MyFirstCalculator =
+      this.getService("MyFirstCalculator");
+    const mySecondCalculator: MySecondCalculator =
+      this.getService("MySecondCalculator");
+
+    console.log("MyFirstCalculator: ", myFirstCalculator.calculate(50, 100));
+    console.log("MySecondCalculator: ", mySecondCalculator.calculate(50, 100));
+  }
 
   suggestUserName() {
     const suggestedName = "Superuser";
@@ -53,5 +71,9 @@ export class AppComponent {
     this.user.gender = this.signupForm.value.gender;
 
     this.signupForm.reset();
+  }
+
+  getService(type: string): MyCalculatorBase {
+    return this.injector.get(calculatorList.get(type));
   }
 }

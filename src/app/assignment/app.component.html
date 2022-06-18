@@ -47,6 +47,7 @@
             >Please enter a valid password!</span
           >
         </div>
+        <p *ngIf="f.invalid && f.touched">Signup Form is invalid</p>
         <button class="btn btn-primary" type="submit" [disabled]="!f.valid">
           Submit
         </button>
