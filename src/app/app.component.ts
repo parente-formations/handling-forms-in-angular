@@ -44,6 +44,7 @@ export class AppComponent {
   // }
 
   onSubmit() {
+    console.log(this.signupForm);
     this.submitted = true;
     this.user.username = this.signupForm.value.userData.username;
     this.user.email = this.signupForm.value.userData.email;
